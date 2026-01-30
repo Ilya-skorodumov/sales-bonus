@@ -42,13 +42,17 @@ function calculateBonusByProfit(index, total, seller) {
  */
 function analyzeSalesData(data, options) {
     // @TODO: Проверка входных данных
+    if (!typeof options === "object") {
+        throw new Error('Неверные опции');
+    }
     const { calculateRevenue, calculateBonus } = options;
+
     if (!data
     || !Array.isArray(data.sellers)
     || data.sellers.length === 0
 ) {
     throw new Error('Некорректные входные данные');
-} 
+}
 
     // @TODO: Проверка наличия опций
     if (!typeof calculateRevenue === "function" || !typeof options === "object") {
