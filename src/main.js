@@ -53,7 +53,7 @@ function analyzeSalesData(data, options) {
 }
 
     // @TODO: Проверка наличия опций
-    if (!typeof calculateRevenue === "function" || !typeof options === "object") {
+    if (!options || !typeof calculateRevenue === "function" || !typeof options === "object") {
     throw new Error('Чего-то не хватает');
 }
 
