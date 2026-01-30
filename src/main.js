@@ -53,7 +53,7 @@ function analyzeSalesData(data, options) {
 
     // @TODO: Проверка наличия опций
     const { calculateRevenue, calculateBonus } = options;
-    if (!options || typeof options.calculateRevenue !== "function" || typeof options.calculateBonus !== "function") {
+    if (!options || typeof calculateRevenue !== "function" || typeof calculateBonus !== "function") {
     throw new Error('Чего-то не хватает');
 }
 
