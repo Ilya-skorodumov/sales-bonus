@@ -42,7 +42,6 @@ function calculateBonusByProfit(index, total, seller) {
  */
 function analyzeSalesData(data, options) {
     // @TODO: Проверка входных данных
-    const { calculateRevenue, calculateBonus } = options;
 
     if (!data
     || !Array.isArray(data.sellers)
@@ -53,7 +52,8 @@ function analyzeSalesData(data, options) {
 }
 
     // @TODO: Проверка наличия опций
-    if (!options || !typeof calculateRevenue === "function" || !typeof options === "object") {
+    const { calculateRevenue, calculateBonus } = options;
+    if (!options || typeof options.calculateRevenue !== "function" || typeof options.calculateBonus !== "function") {
     throw new Error('Чего-то не хватает');
 }
 
@@ -87,7 +87,7 @@ const productIndex = data["products"].reduce((result, item) => ({
         record.items.forEach(item => {
             const product = productIndex[item.sku]; // Товар
             let cost = product.purchase_price * item.quantity; // Посчитать себестоимость (cost) товара как product.purchase_price, умноженную на количество товаров из чека
-            let revenue = calculateSimpleRevenue(item); // Посчитать выручку (revenue) с учётом скидки через функцию calculateRevenue
+            let revenue = options.calculateRevenue(item); // Посчитать выручку (revenue) с учётом скидки через функцию calculateRevenue
             let profit = revenue - cost; // Посчитать прибыль: выручка минус себестоимость
             seller.profit += profit// Увеличить общую накопленную прибыль (profit) у продавца
 
@@ -117,7 +117,7 @@ const productIndex = data["products"].reduce((result, item) => ({
 
     // @TODO: Назначение премий на основе ранжирования
     sellerStats.forEach((seller, index) => {
-        seller.bonus = calculateBonusByProfit(index, sellerStats.length,seller);
+        seller.bonus = options.calculateBonus(index, sellerStats.length,seller);
         seller.bonus = seller.bonus.toFixed(2);
 
         let productsSoldArray = Object.entries(seller.products_sold);
